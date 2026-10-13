@@ -27,3 +27,7 @@ def getIdByName(hero: str, heroList: list):
         if heroList[i]["localized_name"] == hero:
             return i
     return -1
+
+def getLaneRoles():
+    response = requests.get("https://api.opendota.com/api/scenarios/laneRoles")
+    return response.json() if response.status_code == 200 else None 
