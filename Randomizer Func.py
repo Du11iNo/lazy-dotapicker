@@ -7,7 +7,6 @@ from datetime import datetime
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-
 heroes = ac.getHeroes()
 
 while True:
@@ -19,8 +18,7 @@ while True:
     if x == "1" :
 
         print(ac.getHeroName(randint(0,len(heroes)), heroes))
-
-    
+ 
     elif x == "2":
 
         attackType = input("Choose an attack type (Melee/Ranged/Both): ").strip()
@@ -55,5 +53,6 @@ while True:
                 seed = datetime.now()
                 print(ac.getHeroName(choice([i for i in range(0, len(heroes)) if ac.getHeroAttackType(i,heroes) == attackType and role in heroes[i]["roles"]]), heroes))
                 a = input("Write '1' to repeat with current options: ").strip()
+
     if not x:
         continue
