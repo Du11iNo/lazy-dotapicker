@@ -9,9 +9,10 @@ def getHeroes():
     return response.json() if response.status_code == 200 else None
 
 def getHero(heroID: int):
-    if heroID < 0 or heroID > len(response.json()):
+    heroList = getHeroes()
+    if heroID < 0 or heroID > len(heroList):
         return None
-    return getHeroes[heroID] if response.status_code == 200 else None
+    return getHeroes[heroID]
 
 def getHeroName(heroID: int):
     return getHero(heroID)["localized_name"]
