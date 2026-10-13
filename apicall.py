@@ -12,7 +12,7 @@ def getHero(heroID: int):
     heroList = getHeroes()
     if heroID < 0 or heroID > len(heroList):
         return None
-    return getHeroes[heroID]
+    return getHeroes()[heroID]
 
 def getHeroName(heroID: int):
     return getHero(heroID)["localized_name"]
