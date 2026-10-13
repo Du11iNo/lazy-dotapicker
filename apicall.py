@@ -22,8 +22,7 @@ def getHeroAttackType(heroID: int, heroList: list):
 def getHeroAttr(heroID: int, heroList: list):
     return heroList[heroID]["primary_attr"]
 
-def getIdByName(hero: str):
-    heroList = getHeroes()
+def getIdByName(hero: str, heroList: list):
     for i in range(len(heroList)):
         if heroList[i]["localized_name"] == hero:
             return i
