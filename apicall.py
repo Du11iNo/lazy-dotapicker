@@ -8,17 +8,20 @@ def getHeroes():
     response = requests.get("https://api.opendota.com/api/heroes")
     return response.json() if response.status_code == 200 else None
 
-def getHero(heroID: int, heroList: list):
+def getHeroById(heroID: int, heroList: list):
     for i in range(len(heroList)):
         if heroList[i]["id"] == heroID:
             return heroList[i]
     return None
 
+def getHero(Idx: int, heroList: list):
+    return heroList[Idx] if Idx >= 0 and Idx < len(heroList) else None
+
 def getHeroName(heroID: int, heroList: list):
-    return getHero(heroID, heroList)["localized_name"]
+    return getHeroById(heroID, heroList)["localized_name"]
 
 def getHeroAttr(heroID: int, heroList: list):
-    return getHero(heroID, heroList)["primary_attr"]
+    return getHeroById(heroID, heroList)["primary_attr"]
 
 def getIdByName(hero: str, heroList: list):
     for i in range(len(heroList)):
