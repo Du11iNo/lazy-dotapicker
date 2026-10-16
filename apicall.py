@@ -17,9 +17,6 @@ def getHeroById(heroID: int, heroList: list):
 def getHero(Idx: int, heroList: list):
     return heroList[Idx] if Idx >= 0 and Idx < len(heroList) else None
 
-def getHeroName(heroID: int, heroList: list):
-    return getHeroById(heroID, heroList)["localized_name"]
-
 def getHeroAttr(heroID: int, heroList: list):
     return getHeroById(heroID, heroList)["primary_attr"]
 
