@@ -23,7 +23,7 @@ def getHeroAttr(heroID: int, heroList: list):
 def getIdByName(hero: str, heroList: list):
     for i in range(len(heroList)):
         if heroList[i]["localized_name"] == hero:
-            return i
+            return heroList[i]["id"]
     return -1
 
 def getLaneRoles():
