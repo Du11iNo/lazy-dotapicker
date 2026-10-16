@@ -9,18 +9,16 @@ def getHeroes():
     return response.json() if response.status_code == 200 else None
 
 def getHero(heroID: int, heroList: list):
-    if heroID < 0 or heroID > len(heroList):
-        return None
-    return heroList[heroID]
+    for i in range(len(heroList)):
+        if heroList[i]["id"] == heroID:
+            return heroList[i]
+    return None
 
 def getHeroName(heroID: int, heroList: list):
-    return heroList[heroID]["localized_name"]
-
-def getHeroAttackType(heroID: int, heroList: list):
-    return heroList[heroID]["attack_type"]
+    return getHero(heroID, heroList)["localized_name"]
 
 def getHeroAttr(heroID: int, heroList: list):
-    return heroList[heroID]["primary_attr"]
+    return getHero(heroID, heroList)["primary_attr"]
 
 def getIdByName(hero: str, heroList: list):
     for i in range(len(heroList)):
