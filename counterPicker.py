@@ -10,7 +10,7 @@ while True:
         exit()
 
     if ac.os.name == "nt":
-        subprocess.run(["cls"],check=True)
+        subprocess.run(["cmd", "/c", "cls"],check=True)
     else:
         subprocess.run(["clear"],check=True)
 
