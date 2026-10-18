@@ -5,9 +5,6 @@ from datetime import datetime
 import json
 import sys
 
-def clear():
-    os.system('cls' if os.name == 'nt' else 'clear')
-
 heroes = ac.getHeroes()
 if heroes == None:
     print("Failed to load Heroes data", file=sys.stderr)
