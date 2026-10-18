@@ -1,8 +1,37 @@
 import requests
+from dotenv import load_dotenv
+import os
+import sys
 
-def getMatchups(heroID: int):
-    response = requests.get(f"https://api.opendota.com/api/heroes/{heroID}/matchups")
-    return response.json() if response.status_code == 200 else None
+if load_dotenv() == False:
+    inp = input("No .env file found. Paste the api key from stratz.com/api here: ")
+    try:
+        with open(".env", "w") as f:
+            f.write(f"API_KEY={inp}")
+    except IOError:
+        print("Failed to create file.\nTo fix this issue, create a .env file inside the working directory and write inside:\nAPI_KEY=[your-api-key]", file=sys.stderr)
+        exit(1)
+
+apiKey = os.getenv("API_KEY")
+if apiKey == None:
+    print("Failed to get API Key. Exiting...", file=sys.stderr)
+    exit(1)
+
+query = """
+    query ($heroId: Short!){
+        heroStats {
+            heroVsHeroMatchup (heroId: $heroId) {
+                disadvantage {
+                    heroId
+                    vs {
+                        heroId2
+                        synergy
+                    }
+                }
+            }
+        }
+    }
+"""
 
 def getHeroes():
     response = requests.get("https://api.opendota.com/api/heroes")
@@ -17,29 +46,18 @@ def getHeroById(heroID: int, heroList: list):
 def getHero(Idx: int, heroList: list):
     return heroList[Idx] if Idx >= 0 and Idx < len(heroList) else None
 
-def getHeroAttr(heroID: int, heroList: list):
-    return getHeroById(heroID, heroList)["primary_attr"]
-
-def getStats():
-    response = requests.get("https://api.opendota.com/api/heroStats")
-    return response.json() if response.status_code == 200 else None
-
-def getHeroStats(heroID: int, stats: list):
-    for i in range(len(stats)):
-        if stats[i]["id"] == heroID:
-            return stats[i]
-
-def getHeroWR(heroID: int, stats: list):
-    hero = getHeroStats(heroID, stats)
-    return (hero["5_win"]/hero["5_pick"] + hero["6_win"]/hero["6_pick"] + hero["7_win"]/hero["7_pick"]) / 3
-
-
 def getIdByName(hero: str, heroList: list):
     for i in range(len(heroList)):
         if heroList[i]["localized_name"] == hero:
             return heroList[i]["id"]
     return -1
 
-def getLaneRoles():
-    response = requests.get("https://api.opendota.com/api/scenarios/laneRoles")
-    return response.json() if response.status_code == 200 else None 
+def getStratzJson(heroId: int):
+    variables = {"heroId": heroId}
+    response = requests.post("https://api.stratz.com/graphql",
+                             headers={"Authorization": f"Bearer {apiKey}", "Content-Type": "application/json", "User-Agent": "STRATZ_API"},
+                             json={"query": query, "variables": variables})
+    if response.status_code != 200:
+        print("Failed to fetch data from api. Check stratz.com API Status.", file=sys.stderr)
+        exit(1)    
+    return response.json()
