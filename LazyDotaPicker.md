@@ -2,18 +2,18 @@
 
   * Randomize by
 
-    * Attribute
-    * Role
-    * Melee/Ranged
-  * Can focus Meta only
-  * Can focus Counter for Meta only
+    * - [ ] ~~Attribute~~
+    * - [x] Role
+    * - [ ] ~~Melee/Ranged~~
+  * - [ ] Can focus Meta only
+  * - [ ] Can focus Counter for Meta only
 
 
 
 * Counter Picker
 
-  * For hero
-  * For team
+  * - [x] For hero
+  * - [ ] For team
 
 
 
