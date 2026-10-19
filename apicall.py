@@ -48,7 +48,7 @@ def getHero(Idx: int, heroList: list):
 
 def getIdByName(hero: str, heroList: list):
     for i in range(len(heroList)):
-        if heroList[i]["localized_name"] == hero:
+        if heroList[i]["localized_name"].replace("-", "").replace(" ", "").lower() == hero.replace("-", "").replace(" ", "").lower():
             return heroList[i]["id"]
     return -1
 
