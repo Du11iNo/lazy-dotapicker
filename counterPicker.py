@@ -1,5 +1,4 @@
 import apicall as ac
-import json
 import subprocess
 
 heroes = ac.getHeroes()

@@ -1,7 +1,5 @@
 from random import randint, choice
-import os
 import apicall as ac
-from datetime import datetime
 import json
 import sys
 
