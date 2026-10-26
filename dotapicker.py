@@ -1,11 +1,9 @@
 import sys
-import PySide6.QtWidgets as ps
+from tkinter import *
+from tkinter import ttk
 #import counterPicker
 #import randomizer
 
-app = ps.QApplication([])
+window = Tk()
 
-window = ps.QWidget()
-window.show()
-
-app.exec()
+window.mainloop()
