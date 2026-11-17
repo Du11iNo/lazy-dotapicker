@@ -3,20 +3,24 @@ from dotenv import load_dotenv
 import os
 import sys
 
+def relative_path(relative):
+    base = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base, relative)
+
 if load_dotenv() == False:
     inp = input("No .env file found. Paste the api key from stratz.com/api here: ")
     try:
-        with open(".env", "w") as f:
+        with open(relative_path(".env"), "w") as f:
             f.write(f"API_KEY={inp}")
     except IOError:
         print("Failed to create file.\nTo fix this issue, create a .env file inside the working directory and write inside:\nAPI_KEY=[your-api-key]", file=sys.stderr)
-        exit(1)
 
+if (load_dotenv(relative_path(".env")) == False):
+    load_dotenv()
 apiKey = os.getenv("API_KEY")
 if apiKey == None:
-    print("Failed to get API Key. Exiting...", file=sys.stderr)
-    exit(1)
-
+    print("Failed to get API Key.", file=sys.stderr)
+    
 query = """
     query ($heroId: Short!){
         heroStats {
@@ -53,6 +57,9 @@ def getIdByName(hero: str, heroList: list):
     return -1
 
 def getStratzJson(heroId: int):
+    if apiKey == None:
+        print("No API Key provided.")
+        return
     variables = {"heroId": heroId}
     response = requests.post("https://api.stratz.com/graphql",
                              headers={"Authorization": f"Bearer {apiKey}", "Content-Type": "application/json", "User-Agent": "STRATZ_API"},
