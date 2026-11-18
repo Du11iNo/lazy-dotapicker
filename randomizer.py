@@ -92,8 +92,6 @@ def randomize():
                 continue
     except Exception as e:
         print(e)
-    finally:
-        os.system('pause')
 
 def clear():
     if ac.os.name == "nt":
