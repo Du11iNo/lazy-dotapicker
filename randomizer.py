@@ -4,8 +4,15 @@ import json
 import sys, os
 import subprocess
 
+off = False
+safe = False
+mid = False
+role = 0
+
 
 def randomize():
+    choices = set()
+
     try:
         heroes = ac.getHeroes()
         if heroes == None:
@@ -17,81 +24,26 @@ def randomize():
         if laneData == None:
             print("Failed to load Lanes data", file=sys.stderr)
             return
-
-        while True:
-
-            x = input("Write '1' for Random, '2' for Options (q to exit): ").strip()
-
-            clear()
-
-            if x == "q":
-                return
-
-            if x == "1" :
-
-                print(ac.getHero(randint(0,len(heroes)), heroes)["localized_name"])
- 
-            elif x == "2":
-
-                role = input("Choose a role (Carry/Support/Both): ").strip().lower()
-
-                if role != "carry" and role != "support" and role != "both":
-                    continue
-
-                lane = input("Choose a lane (Mid/Off/Safe/All): ").strip().lower()
-
-                if lane != "mid" and lane != "off" and lane != "safe" and lane != "all":
-                    continue
-        
-                a = "1"
-                while a == "1":
-
-                    if role.capitalize() == "Both":
-                        match lane:
-                            case "safe":
-                                ls = laneData.get("safe")
-                            case "mid":
-                                ls = laneData.get("mid")
-                            case "off":
-                                ls = laneData.get("off")
-                            case _:
-                                ls = heroes
-
-                        result = ac.getHero(choice([i for i in range(len(ls))]), heroes)["localized_name"]
-
-                        clear()
-                        if result == None:
-                            print("No hero found...", file=sys.stderr)
-                        else:
-                            print(result)
-
-                        a = input("Write '1' to repeat with current options (q to exit): ").strip()
-
-                    else:
-                        match lane:
-                            case "safe":
-                                ls = laneData.get("safe")  
-                            case "mid":
-                                ls = laneData.get("mid")
-                            case "off":
-                                ls = laneData.get("off")
-                            case _:
-                                ls = heroes
-
-                        result = ac.getHero(choice([i for i in range(len(heroes)) if role.capitalize() in heroes[i]["roles"] and ac.getHero(i,heroes)["id"] in ls]), heroes)["localized_name"]
-
-                        clear()
-                        if result == None:
-                            print("No hero found...")
-                        else:
-                            print(result)
-
-                        a = input("Write '1' to repeat with current options (q to exit): ").strip()
-
-            if not x:
-                continue
-    except Exception as e:
+    except IOError as e:
         print(e)
+        return
+
+    if mid:
+        choices.update(laneData.get("mid"))
+    if off:
+        choices.update(laneData.get("off"))
+    if safe:
+        choices.update(laneData.get("safe"))
+    if not mid and not off and not safe:
+        choices.update(laneData.get("mid"))
+        choices.update(laneData.get("safe"))
+        choices.update(laneData.get("off"))
+
+    match role:
+        case 1: return choice(list(choices.intersection(set(laneData.get("core")))))
+        case 2: return choice(list(choices.intersection(set(laneData.get("support")))))
+        case _: return choice(list(choices))
+
 
 def clear():
     if ac.os.name == "nt":

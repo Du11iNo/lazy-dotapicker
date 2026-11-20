@@ -3,20 +3,23 @@ import subprocess
 import counterPicker, randomizer
 import apicall as ac
 
+def toggleMid():
+    randomizer.mid = not randomizer.mid
 
-while True:
-    choice = input("Pick either Randomizer or Counter Picker (\"r\" or \"c\", \"q\" to exit): ")
+def toggleOff():
+    randomizer.off = not randomizer.off
 
-    match choice.lower():
-        case "r":
-            randomizer.randomize()
-        case "c":
-            counterPicker.counterPick()
-        case "q":
-            break
-        case _:
-            if ac.os.name == "nt":
-                subprocess.run(["cmd", "/c", "cls"],check=True)
-            else:
-                subprocess.run(["clear"],check=True)
-            print("Wrong input")
+def toggleSafe():
+    randomizer.safe = not randomizer.safe
+
+def pickSupport():
+    if randomizer.role == 2:
+        randomizer.role = 0
+    else:
+        randomizer.role = 2
+
+def pickCore():
+    if randomizer.role == 1:
+        randomizer.role = 0
+    else:
+        randomizer.role = 1
