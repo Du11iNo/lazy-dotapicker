@@ -19,8 +19,13 @@ def counterPick():
             print(f"Failed to find hero: {hero}")
             continue
         stats = ac.getStratzJson(id)
-        top = stats["data"]["heroStats"]["heroVsHeroMatchup"]["disadvantage"][0]["vs"][:5]
 
+        try:
+            top = stats["data"]["heroStats"]["heroVsHeroMatchup"]["disadvantage"][0]["vs"][:5]
+        except IndexError as e:
+            print("Currently there is not enough data for the Counter Picker. Wait some time until enough data has been gathered.\nThis usually happens when an update has been released on Dota 2")
+            return
+        
         for i in range(len(top)):
             row = top[i]
             print(f"    {ac.getHeroById(row["heroId2"], heroes)["localized_name"]}: {row["synergy"]}")
